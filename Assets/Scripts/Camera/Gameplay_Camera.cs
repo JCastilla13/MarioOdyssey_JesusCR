@@ -13,8 +13,7 @@ public class Gameplay_Camera : MonoBehaviour
     [SerializeField]
     private float cameraLerp; //12f
 
-    private float rotationX;
-    private float rotationY;
+    private Vector2 GetCamera;
 
     private RaycastHit hit;
 
@@ -23,9 +22,11 @@ public class Gameplay_Camera : MonoBehaviour
         //rotationX += Input.GetAxis("Mouse Y");
         //rotationY += Input.GetAxis("Mouse X");
 
-        rotationX = Mathf.Clamp(rotationX, -50f, 50f);
+        GetCamera += Input_Manager._INPUT_MANAGER.GetMouseAxisUpdate();
 
-        transform.eulerAngles = new Vector3(rotationX, rotationY, 0);
+        GetCamera.y = Mathf.Clamp(GetCamera.y, -50f, 50f);
+
+        transform.eulerAngles = new Vector3(GetCamera.y, GetCamera.x, 0);
 
         transform.position = Vector3.Lerp(transform.position, target.transform.position - transform.forward * targetDistance, cameraLerp * Time.deltaTime);
 

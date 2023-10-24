@@ -134,9 +134,10 @@ GameObject:
   - component: {fileID: 33510169}
   - component: {fileID: 33510168}
   - component: {fileID: 33510167}
-  - component: {fileID: 33510166}
   - component: {fileID: 33510165}
   - component: {fileID: 33510170}
+  - component: {fileID: 33510172}
+  - component: {fileID: 33510171}
   m_Layer: 0
   m_Name: Mario
   m_TagString: Untagged
@@ -169,29 +170,6 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &33510166
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 33510164}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &33510167
 MeshRenderer:
@@ -271,8 +249,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803baebd013a581469238847adb098fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstJumpForce: 8
+  jumpForceIncrement: 3
+  countTypeJump: 1
+  countMaxTypeJump: 3
   cam: {fileID: 80463138}
-  inputActionRef: {fileID: 5559613540348139354, guid: 380e87cc44a90724cb2ccb9d3ed7486e, type: 3}
+--- !u!114 &33510171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33510164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b0010c7e9130d45a9c1fb58109f202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToSpawn: {fileID: 3389390520662999803, guid: 1c622720a70154042879ed34f2248500, type: 3}
+  destroyDelay: 5
+  vc: {x: 0, y: 0, z: 3}
+  imapct: {x: 0, y: 1, z: 0}
+  characterController: {fileID: 33510165}
+--- !u!114 &33510172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33510164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 380e87cc44a90724cb2ccb9d3ed7486e, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Character
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &80463138
 GameObject:
   m_ObjectHideFlags: 0

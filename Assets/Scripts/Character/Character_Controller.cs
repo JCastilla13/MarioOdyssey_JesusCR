@@ -15,13 +15,23 @@ public class Character_Controller : MonoBehaviour
     private float coyoteTime = 1f;
 
     private float countTimeToJump;
+
+    [SerializeField]
+    private float firstJumpForce = 8;
+
+    [SerializeField]
+    private float jumpForceIncrement = 3;
+
+    [SerializeField]
     private int countTypeJump = 1;
+
+    [SerializeField]
+    private int countMaxTypeJump = 3;
 
     [SerializeField]
     private GameObject cam;
 
-    //[SerializeField]
-    //private InputActionReference inputActionRef;
+    private Vector3 inputKeysMovement = Vector3.zero;
 
 
     private void Awake()
@@ -31,12 +41,15 @@ public class Character_Controller : MonoBehaviour
 
     private void Update()
     {
-
         countTimeToJump += Time.deltaTime;
 
         //Calcular dirección XZ
-        Vector3 direction = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f) * new Vector3(0f, 0f, 0f);
+        Vector3 direction = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f) * new Vector3(inputKeysMovement.x, 0f, inputKeysMovement.z);
         direction.Normalize();
+
+        Vector2 inputVector = Input_Manager._INPUT_MANAGER.GetLeftAxisUpdate();
+        inputKeysMovement = new Vector3(inputVector.x, 0f, inputVector.y);
+        inputKeysMovement.Normalize();
 
         //Calcular velocidad XZ
         finalVelocity.x = direction.x * velocityXZ;
@@ -48,53 +61,39 @@ public class Character_Controller : MonoBehaviour
         //Calcular gravedad
         if (controller.isGrounded)
         {
-            if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed() && countTypeJump == 1)
+            coyoteTime = 0.1f;
+
+            if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed())
             {
-                finalVelocity.y = jumpForce;
-                countTypeJump = 2;
+                
                 countTimeToJump = 0f;
-            }
+                finalVelocity.y = firstJumpForce;
+                firstJumpForce += jumpForceIncrement;
+                countTypeJump++;
 
-            else if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed() && countTypeJump == 2)
-            {
-                if (countTimeToJump <= 5f)
+                if (countTypeJump > countMaxTypeJump)
                 {
-                    finalVelocity.y = jumpForce * 2;
-                    countTypeJump = 3;
-                    countTimeToJump = 0f;
-                }
-            }
-
-            else if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed() && countTypeJump == 3)
-            {
-                if (countTimeToJump <= 5f)
-                {
-                    finalVelocity.y = jumpForce * 3;
+                    firstJumpForce = 8f; 
                     countTypeJump = 1;
-                    countTimeToJump = 0f;
                 }
             }
         }
+
         else
         {
             finalVelocity.y += direction.y * gravity * Time.deltaTime;
             coyoteTime -= Time.deltaTime;
         }
 
-        if(countTimeToJump >= 5f)
+        if (countTimeToJump >= 3f)
         {
+            firstJumpForce = 8f;
             countTypeJump = 1;
-        }
-
-        if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed() && coyoteTime >= 0f)
-        {
-            finalVelocity.y = jumpForce;
-            coyoteTime = 0f;
+            countTimeToJump = 0f;
         }
 
         controller.Move(finalVelocity * Time.deltaTime);
-        Debug.Log(countTimeToJump);
     }
-
 }
-;
+
+

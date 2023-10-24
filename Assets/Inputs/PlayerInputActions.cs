@@ -44,6 +44,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""ccd03058-4e40-4438-a5b5-3b1f140fee2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c8778a45-c110-4788-8b92-bc81a4428c9f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +152,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea87135f-b7b9-410e-b103-574337524351"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""56bc0009-b2e2-4b6c-aa00-05c646ca5de6"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e989a7f-b6fc-4236-9fba-43ac8910d50f"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""acd0553b-db1a-4d69-a25d-15d515131d18"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +206,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
         m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
+        m_Character_Spawn = m_Character.FindAction("Spawn", throwIfNotFound: true);
+        m_Character_Camera = m_Character.FindAction("Camera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,12 +271,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<ICharacterActions> m_CharacterActionsCallbackInterfaces = new List<ICharacterActions>();
     private readonly InputAction m_Character_Move;
     private readonly InputAction m_Character_Jump;
+    private readonly InputAction m_Character_Spawn;
+    private readonly InputAction m_Character_Camera;
     public struct CharacterActions
     {
         private @PlayerInputActions m_Wrapper;
         public CharacterActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Character_Move;
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
+        public InputAction @Spawn => m_Wrapper.m_Character_Spawn;
+        public InputAction @Camera => m_Wrapper.m_Character_Camera;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -228,6 +296,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Spawn.started += instance.OnSpawn;
+            @Spawn.performed += instance.OnSpawn;
+            @Spawn.canceled += instance.OnSpawn;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -238,6 +312,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Spawn.started -= instance.OnSpawn;
+            @Spawn.performed -= instance.OnSpawn;
+            @Spawn.canceled -= instance.OnSpawn;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -259,5 +339,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnSpawn(InputAction.CallbackContext context);
+        void OnCamera(InputAction.CallbackContext context);
     }
 }

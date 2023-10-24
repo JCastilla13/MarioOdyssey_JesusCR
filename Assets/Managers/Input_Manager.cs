@@ -13,6 +13,8 @@ public class Input_Manager : MonoBehaviour
 
     private Vector2 leftAxisValue = Vector2.zero;
 
+    private Vector2 mouseAxisValue = Vector2.zero;
+
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class Input_Manager : MonoBehaviour
             playerInputs.Character.Enable();
             playerInputs.Character.Jump.performed += JumpButtonPressed;
             playerInputs.Character.Move.performed += LeftAxisUpdate;
+            playerInputs.Character.Camera.performed += MouseAxisUpdate;
             _INPUT_MANAGER = this;
             DontDestroyOnLoad(this);
         }
@@ -44,12 +47,25 @@ public class Input_Manager : MonoBehaviour
     private void LeftAxisUpdate(InputAction.CallbackContext context)
     {
         leftAxisValue = context.ReadValue<Vector2>();
-        Debug.Log("Magnitude: " + leftAxisValue.magnitude);
-        Debug.Log("Normalize: " + leftAxisValue.normalized);
+    }
+
+    private void MouseAxisUpdate(InputAction.CallbackContext context)
+    {
+        mouseAxisValue = context.ReadValue<Vector2>();
     }
 
     public bool GetSouthButtonPressed()
     {
         return this.timeSinceJumpPressed == 0f;
+    }
+
+    public Vector2 GetLeftAxisUpdate()
+    {
+        return this.leftAxisValue; 
+    }
+
+    public Vector2 GetMouseAxisUpdate()
+    {
+        return this.mouseAxisValue;
     }
 }

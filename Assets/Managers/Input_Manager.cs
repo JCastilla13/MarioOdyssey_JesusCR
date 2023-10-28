@@ -22,8 +22,6 @@ public class Input_Manager : MonoBehaviour
 
     private float backJumpButtonPressed = 0f;
 
-
-
     private void Awake()
     {
         if (_INPUT_MANAGER != null && _INPUT_MANAGER != this)

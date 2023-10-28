@@ -28,11 +28,13 @@ public class Character_Controller : MonoBehaviour
     private bool isCrouching = false;
 
     private Vector3 inputKeysMovement = Vector3.zero;
+    private Vector3 lastMoveDirection = Vector3.forward;
 
     private Animator anim;
 
-    private float currVelocity = 0;
-    private float incrementVelocityTime = 8f;
+    private float currVelocityAnimation = 0;
+    private float incrementVelocityTimeAnimation = 8f;
+    private float acceleration = 6f;
 
     private void Awake()
     {
@@ -54,21 +56,26 @@ public class Character_Controller : MonoBehaviour
         inputKeysMovement.Normalize();
 
         //Calcular velocidad XZ
-        finalVelocity.x = direction.x * velocityXZ;
-        finalVelocity.z = direction.z * velocityXZ;
+        finalVelocity.x = Mathf.MoveTowards(finalVelocity.x, direction.x * velocityXZ, acceleration * Time.deltaTime);
+        finalVelocity.z = Mathf.MoveTowards(finalVelocity.z, direction.z * velocityXZ, acceleration * Time.deltaTime);
 
         if (inputKeysMovement.magnitude > 0)
         {
-            currVelocity += incrementVelocityTime * Time.deltaTime;
+            currVelocityAnimation += incrementVelocityTimeAnimation * Time.deltaTime;
 
-            currVelocity = Mathf.Min(currVelocity, 5);
+            currVelocityAnimation = Mathf.Min(currVelocityAnimation, 5);
+
+            lastMoveDirection = direction;
         }
+
         else
         {
-            currVelocity = 0;
+            currVelocityAnimation = 0;
+
+            transform.rotation = Quaternion.LookRotation(lastMoveDirection);
         }
 
-        anim.SetFloat("velocity", currVelocity);
+        anim.SetFloat("velocity", currVelocityAnimation);
 
         //Asignar dirección Y
         direction.y = -1f;
@@ -99,7 +106,7 @@ public class Character_Controller : MonoBehaviour
                 {
                     anim.SetBool("isGrounded", false);
                     countTimeToJump = 0f;
-                    finalVelocity.y = 5; 
+                    finalVelocity.y = 5;
                 }
             }
 
@@ -153,23 +160,13 @@ public class Character_Controller : MonoBehaviour
         {
             if (Input_Manager._INPUT_MANAGER.GetBackJumpButton())
             {
-                //finalVelocity.y = 12;
+                controller.Move(-Vector3.forward * 10f);
+                finalVelocity.y = 10f;
             }
         }
 
 
         controller.Move(finalVelocity * Time.deltaTime);
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.collider.tag == "Wall")
-        {
-            if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed())
-            {
-                //codigo empuje hacia atras
-            }
-        }
     }
 }
 

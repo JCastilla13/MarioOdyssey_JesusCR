@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Cappy
   - Wall
+  - Enemy
+  - Star
   layers:
   - Default
   - TransparentFX

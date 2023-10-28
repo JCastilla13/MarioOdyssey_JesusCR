@@ -10,7 +10,12 @@ public class Spawn_Cappy : MonoBehaviour
 
     private GameObject cappySpawned;
 
-    private Vector3 forwardPlusPosition = new Vector3(0, 0, 3);
+    private Vector3 forwardPlusPosition = new Vector3(0, 1, 3);
+
+    private Vector3 bouncePlayerDirection = Vector3.up;
+   
+    [SerializeField]
+    private float bouncePlayerForce = 10f;
 
     [SerializeField]
     private CharacterController characterController;
@@ -32,7 +37,8 @@ public class Spawn_Cappy : MonoBehaviour
     {
         if (hit.collider.tag == "Cappy")
         {
-            //impulso
+            characterController.Move(bouncePlayerDirection * bouncePlayerForce);
+            
         }
     }
 

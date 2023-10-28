@@ -24,7 +24,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Spawn",
+                    "name": "Camera",
+                    "type": "PassThrough",
+                    "id": "c8778a45-c110-4788-8b92-bc81a4428c9f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpawnCappy",
                     "type": "Button",
                     "id": "ccd03058-4e40-4438-a5b5-3b1f140fee2f",
                     "expectedControlType": "Button",
@@ -33,10 +42,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Camera",
-                    "type": "PassThrough",
-                    "id": "c8778a45-c110-4788-8b92-bc81a4428c9f",
-                    "expectedControlType": "Vector2",
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "d1d7f1e6-1384-42cc-a3ec-1912d1eca002",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BackJump",
+                    "type": "Button",
+                    "id": "620b232c-feac-4a2b-a02a-bad2373d9985",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -133,28 +151,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ea87135f-b7b9-410e-b103-574337524351",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Spawn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "56bc0009-b2e2-4b6c-aa00-05c646ca5de6",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Spawn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5e989a7f-b6fc-4236-9fba-43ac8910d50f",
                     "path": "<Mouse>/delta",
                     "interactions": "",
@@ -172,6 +168,61 @@
                     "processors": "",
                     "groups": "",
                     "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea87135f-b7b9-410e-b103-574337524351",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnCappy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "56bc0009-b2e2-4b6c-aa00-05c646ca5de6",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpawnCappy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4d62c5c7-4d06-4fbf-b255-650e8e3e862f",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc67eb7b-f9df-4470-9909-8989f2574cca",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "124ba175-46b9-4acd-8b4e-3a868d796fb1",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackJump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

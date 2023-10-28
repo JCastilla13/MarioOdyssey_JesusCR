@@ -11,32 +11,33 @@ public class Character_Controller : MonoBehaviour
     private Vector3 finalVelocity = Vector3.zero;
     private float velocityXZ = 5f;
     private float gravity = 20f;
-    private float jumpForce = 8f;
-    private float coyoteTime = 1f;
 
     private float countTimeToJump;
 
-    [SerializeField]
-    private float firstJumpForce = 8;
+    [SerializeField] private int countTypeJump = 1;
+    [SerializeField] private int countMaxTypeJump = 3;
 
-    [SerializeField]
-    private float jumpForceIncrement = 3;
+    [SerializeField] private float firstJumpForce = 10;
+    [SerializeField] private float jumpForceAdded = 4;
 
-    [SerializeField]
-    private int countTypeJump = 1;
+    [SerializeField] private int backJumpForce = 4;
+    [SerializeField] private int backJumpForceUp = 6;
 
-    [SerializeField]
-    private int countMaxTypeJump = 3;
+    [SerializeField] private GameObject cam;
 
-    [SerializeField]
-    private GameObject cam;
+    private bool isCrouching = false;
 
     private Vector3 inputKeysMovement = Vector3.zero;
 
+    private Animator anim;
+
+    private float currVelocity = 0;
+    private float incrementVelocityTime = 8f;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -45,6 +46,7 @@ public class Character_Controller : MonoBehaviour
 
         //Calcular dirección XZ
         Vector3 direction = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f) * new Vector3(inputKeysMovement.x, 0f, inputKeysMovement.z);
+        transform.rotation = Quaternion.LookRotation(direction);
         direction.Normalize();
 
         Vector2 inputVector = Input_Manager._INPUT_MANAGER.GetLeftAxisUpdate();
@@ -55,44 +57,119 @@ public class Character_Controller : MonoBehaviour
         finalVelocity.x = direction.x * velocityXZ;
         finalVelocity.z = direction.z * velocityXZ;
 
+        if (inputKeysMovement.magnitude > 0)
+        {
+            currVelocity += incrementVelocityTime * Time.deltaTime;
+
+            currVelocity = Mathf.Min(currVelocity, 5);
+        }
+        else
+        {
+            currVelocity = 0;
+        }
+
+        anim.SetFloat("velocity", currVelocity);
+
         //Asignar dirección Y
         direction.y = -1f;
 
-        //Calcular gravedad
         if (controller.isGrounded)
         {
-            coyoteTime = 0.1f;
-
             if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed())
             {
-                
-                countTimeToJump = 0f;
-                finalVelocity.y = firstJumpForce;
-                firstJumpForce += jumpForceIncrement;
-                countTypeJump++;
-
-                if (countTypeJump > countMaxTypeJump)
+                if (!isCrouching)
                 {
-                    firstJumpForce = 8f; 
-                    countTypeJump = 1;
+                    anim.SetBool("isGrounded", false);
+
+                    countTimeToJump = 0f;
+
+                    anim.SetInteger("jumpType", countTypeJump);
+
+                    finalVelocity.y = firstJumpForce;
+                    firstJumpForce += jumpForceAdded;
+                    countTypeJump++;
+
+                    if (countTypeJump > countMaxTypeJump)
+                    {
+                        firstJumpForce = 10f;
+                        countTypeJump = 1;
+                    }
                 }
+                else
+                {
+                    anim.SetBool("isGrounded", false);
+                    countTimeToJump = 0f;
+                    finalVelocity.y = 5; 
+                }
+            }
+
+            else
+            {
+                anim.SetBool("isGrounded", true);
             }
         }
 
         else
         {
             finalVelocity.y += direction.y * gravity * Time.deltaTime;
-            coyoteTime -= Time.deltaTime;
         }
 
-        if (countTimeToJump >= 3f)
+        if (finalVelocity.y < -0.1f)
         {
-            firstJumpForce = 8f;
+            anim.SetBool("isFalling", true);
+        }
+
+        else
+        {
+            anim.SetBool("isFalling", false);
+        }
+
+        if (countTimeToJump >= 4f)
+        {
+            firstJumpForce = 10f;
             countTypeJump = 1;
             countTimeToJump = 0f;
         }
 
+        if (Input_Manager._INPUT_MANAGER.GetCrouchButton())
+        {
+            if (!isCrouching)
+            {
+                isCrouching = true;
+                anim.SetBool("isCrouch", true);
+                controller.height = 0.75f;
+                velocityXZ = 2f;
+            }
+            else
+            {
+                isCrouching = false;
+                anim.SetBool("isCrouch", false);
+                controller.height = 2.0f;
+                velocityXZ = 5.0f;
+            }
+        }
+
+        if (controller.isGrounded && isCrouching)
+        {
+            if (Input_Manager._INPUT_MANAGER.GetBackJumpButton())
+            {
+                //finalVelocity.y = 12;
+            }
+        }
+
+
         controller.Move(finalVelocity * Time.deltaTime);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.tag == "Wall")
+        {
+            if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed())
+            {
+                //codigo empuje hacia atras
+            }
+        }
     }
 }
 

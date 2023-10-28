@@ -19,9 +19,6 @@ public class Gameplay_Camera : MonoBehaviour
 
     private void LateUpdate()
     {
-        //rotationX += Input.GetAxis("Mouse Y");
-        //rotationY += Input.GetAxis("Mouse X");
-
         GetCamera += Input_Manager._INPUT_MANAGER.GetMouseAxisUpdate();
 
         GetCamera.y = Mathf.Clamp(GetCamera.y, -50f, 50f);

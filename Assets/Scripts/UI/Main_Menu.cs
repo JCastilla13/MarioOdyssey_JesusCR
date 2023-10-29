@@ -10,6 +10,11 @@ public class Main_Menu : MonoBehaviour
         SceneManager.LoadScene("GamePlay");
     }
 
+    public void ChangeToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     public void Exit()
     {
         //He buscado porque no me funcionaba Application.Quit(); y he encontrado el resto del codigo, no lo pongo en IGNORE porque el resto es mio

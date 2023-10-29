@@ -7,8 +7,8 @@ TagManager:
   - Cappy
   - Wall
   - Enemy
-  - Star
   - Platform
+  - Moon
   layers:
   - Default
   - TransparentFX

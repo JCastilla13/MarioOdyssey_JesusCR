@@ -89,6 +89,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e18f20c-93ff-4751-a1bf-14b90334b216"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -289,6 +298,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""FrontJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a0f8fb6-b73d-4cfa-bb6b-541af05af0b1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2607add-2059-49c0-812a-1fe11f56c23d"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -304,6 +335,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Character_Crouch = m_Character.FindAction("Crouch", throwIfNotFound: true);
         m_Character_BackJump = m_Character.FindAction("BackJump", throwIfNotFound: true);
         m_Character_FrontJump = m_Character.FindAction("FrontJump", throwIfNotFound: true);
+        m_Character_PauseMenu = m_Character.FindAction("PauseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -372,6 +404,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Crouch;
     private readonly InputAction m_Character_BackJump;
     private readonly InputAction m_Character_FrontJump;
+    private readonly InputAction m_Character_PauseMenu;
     public struct CharacterActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -383,6 +416,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Character_Crouch;
         public InputAction @BackJump => m_Wrapper.m_Character_BackJump;
         public InputAction @FrontJump => m_Wrapper.m_Character_FrontJump;
+        public InputAction @PauseMenu => m_Wrapper.m_Character_PauseMenu;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -413,6 +447,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @FrontJump.started += instance.OnFrontJump;
             @FrontJump.performed += instance.OnFrontJump;
             @FrontJump.canceled += instance.OnFrontJump;
+            @PauseMenu.started += instance.OnPauseMenu;
+            @PauseMenu.performed += instance.OnPauseMenu;
+            @PauseMenu.canceled += instance.OnPauseMenu;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -438,6 +475,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @FrontJump.started -= instance.OnFrontJump;
             @FrontJump.performed -= instance.OnFrontJump;
             @FrontJump.canceled -= instance.OnFrontJump;
+            @PauseMenu.started -= instance.OnPauseMenu;
+            @PauseMenu.performed -= instance.OnPauseMenu;
+            @PauseMenu.canceled -= instance.OnPauseMenu;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -464,5 +504,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnBackJump(InputAction.CallbackContext context);
         void OnFrontJump(InputAction.CallbackContext context);
+        void OnPauseMenu(InputAction.CallbackContext context);
     }
 }

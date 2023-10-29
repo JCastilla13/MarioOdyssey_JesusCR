@@ -15,7 +15,7 @@ public class Character_Colissions : MonoBehaviour
         {
             if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed())
             {
-                controller.AddBackImpact(backImpulse);
+                controller.AddWallImpact(backImpulse);
             }
         }
 
@@ -24,14 +24,14 @@ public class Character_Colissions : MonoBehaviour
             SceneManager.LoadScene("Gameplay");
         }
 
-        if (hit.collider.tag == "Star")
+        if (hit.collider.tag == "Moon")
         {
-            int newCountStars = Count_Stars.count_stars.GetStarCount() + 1;
-            Count_Stars.count_stars.SetStarCount(newCountStars);
+            int newCountMoons = Count_Moons.count_moons.GetStarCount() + 1;
+            Count_Moons.count_moons.SetStarCount(newCountMoons);
             Destroy(hit.gameObject);
             //audio
 
-            if (newCountStars == 6)
+            if (newCountMoons == 6)
             {
                 SceneManager.LoadScene("GameWin");
             }

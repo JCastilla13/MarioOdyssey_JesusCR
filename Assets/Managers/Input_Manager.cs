@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class Input_Manager : MonoBehaviour
 {
@@ -24,6 +23,8 @@ public class Input_Manager : MonoBehaviour
 
     private float frontJumpButtonPressed = 0f;
 
+    private float pauseMenuButtonPressed = 0f;
+
     private void Awake()
     {
         if (_INPUT_MANAGER != null && _INPUT_MANAGER != this)
@@ -41,6 +42,7 @@ public class Input_Manager : MonoBehaviour
             playerInputs.Character.Crouch.performed += CrouchButton;
             playerInputs.Character.BackJump.performed += BackJumpButton;
             playerInputs.Character.FrontJump.performed += FrontJumpButton;
+            playerInputs.Character.PauseMenu.performed += PauseMenuButton;
             _INPUT_MANAGER = this;
             DontDestroyOnLoad(this);
         }
@@ -57,6 +59,8 @@ public class Input_Manager : MonoBehaviour
         backJumpButtonPressed += Time.deltaTime;
 
         frontJumpButtonPressed += Time.deltaTime;
+
+        pauseMenuButtonPressed += Time.deltaTime;
 
         InputSystem.Update();
     }
@@ -95,6 +99,11 @@ public class Input_Manager : MonoBehaviour
         frontJumpButtonPressed = 0f;
     }
 
+    private void PauseMenuButton(InputAction.CallbackContext context)
+    {
+        pauseMenuButtonPressed = 0f;
+    }
+
     public bool GetSouthButtonPressed()
     {
         return this.timeSinceJumpPressed == 0f;
@@ -128,5 +137,10 @@ public class Input_Manager : MonoBehaviour
     public bool GetFrontJumpButton()
     {
         return this.frontJumpButtonPressed == 0f;
+    }
+
+    public bool GetPauseMenuButton()
+    {
+        return this.pauseMenuButtonPressed == 0f;
     }
 }

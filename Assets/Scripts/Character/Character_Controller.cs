@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -170,13 +169,13 @@ public class Character_Controller : MonoBehaviour
         {
             if (Input_Manager._INPUT_MANAGER.GetBackJumpButton())
             {
-                finalVelocity += -cam.transform.forward * backJumpForce;
+                finalVelocity += -transform.forward * backJumpForce;
                 finalVelocity.y = backJumpForceUp;
             }
 
             if (Input_Manager._INPUT_MANAGER.GetFrontJumpButton())
             {
-                finalVelocity += cam.transform.forward * frontJumpForce;
+                finalVelocity += transform.forward * frontJumpForce;
                 finalVelocity.y = frontJumpForceUp;
             }
         }
@@ -195,10 +194,14 @@ public class Character_Controller : MonoBehaviour
         finalVelocity.y = addPlatformImpulse;
     }
 
-    public void AddBackImpact(Vector3 direction)
+    public void AddWallImpact(Vector3 direction)
     {
-        finalVelocity += direction * backWallImpact;
-        finalVelocity.y = backWallImpactUp;
+        if (!controller.isGrounded)
+        {
+            finalVelocity += -transform.forward * backWallImpact;
+            finalVelocity.y = backWallImpactUp;
+            lastMoveDirection = -lastMoveDirection;
+        }
     }
 }
 

@@ -6,10 +6,16 @@ using UnityEngine.SceneManagement;
 public class Character_Colissions : MonoBehaviour
 {
     private Vector3 backImpulse = -Vector3.forward;
+    private Vector3 bouncePlayerDirection = Vector3.up;
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Character_Controller controller = GetComponent<Character_Controller>();
+
+        if (hit.collider.tag == "Cappy")
+        {
+            controller.AddCappyImpulse(bouncePlayerDirection);
+        }
 
         if (hit.collider.tag == "Wall")
         {
@@ -31,7 +37,7 @@ public class Character_Colissions : MonoBehaviour
             Destroy(hit.gameObject);
             //audio
 
-            if (newCountMoons == 6)
+            if (newCountMoons == 13)
             {
                 SceneManager.LoadScene("GameWin");
             }

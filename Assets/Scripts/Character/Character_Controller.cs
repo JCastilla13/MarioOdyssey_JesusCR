@@ -14,14 +14,24 @@ public class Character_Controller : MonoBehaviour
 
     private float countTimeToJump;
 
-    [SerializeField] private int countTypeJump = 1;
-    [SerializeField] private int countMaxTypeJump = 3;
+    private int countTypeJump = 1;
+    private int countMaxTypeJump = 3;
 
-    [SerializeField] private float firstJumpForce = 10;
-    [SerializeField] private float jumpForceAdded = 4;
+    private float firstJumpForce = 10;
+    private float jumpForceAdded = 4;
 
-    [SerializeField] private int backJumpForce = 4;
-    [SerializeField] private int backJumpForceUp = 6;
+    private int backJumpForce = 10;
+    private int backJumpForceUp = 15;
+
+    private int frontJumpForce = 15;
+    private int frontJumpForceUp = 15;
+
+    private int backWallImpact = 14;
+    private int backWallImpactUp = 16;
+
+    private int addCappyImpulse = 20;
+
+    private int addPlatformImpulse = 25;
 
     [SerializeField] private GameObject cam;
 
@@ -160,13 +170,35 @@ public class Character_Controller : MonoBehaviour
         {
             if (Input_Manager._INPUT_MANAGER.GetBackJumpButton())
             {
-                controller.Move(-Vector3.forward * 10f);
-                finalVelocity.y = 10f;
+                finalVelocity += -cam.transform.forward * backJumpForce;
+                finalVelocity.y = backJumpForceUp;
+            }
+
+            if (Input_Manager._INPUT_MANAGER.GetFrontJumpButton())
+            {
+                finalVelocity += cam.transform.forward * frontJumpForce;
+                finalVelocity.y = frontJumpForceUp;
             }
         }
 
 
         controller.Move(finalVelocity * Time.deltaTime);
+    }
+
+    public void AddCappyImpulse(Vector3 direction)
+    {
+        finalVelocity.y = addCappyImpulse;
+    }
+
+    public void AddPlatformImpulse(Vector3 direction)
+    {
+        finalVelocity.y = addPlatformImpulse;
+    }
+
+    public void AddBackImpact(Vector3 direction)
+    {
+        finalVelocity += direction * backWallImpact;
+        finalVelocity.y = backWallImpactUp;
     }
 }
 

@@ -5,14 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class Character_Colissions : MonoBehaviour
 {
+    private Vector3 backImpulse = -Vector3.forward;
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        Character_Controller controller = GetComponent<Character_Controller>();
+
         if (hit.collider.tag == "Wall")
         {
             if (Input_Manager._INPUT_MANAGER.GetSouthButtonPressed())
             {
-                //codigo empuje hacia atras
+                controller.AddBackImpact(backImpulse);
             }
         }
 
@@ -27,6 +30,16 @@ public class Character_Colissions : MonoBehaviour
             Count_Stars.count_stars.SetStarCount(newCountStars);
             Destroy(hit.gameObject);
             //audio
+
+            if (newCountStars == 6)
+            {
+                SceneManager.LoadScene("GameWin");
+            }
+        }
+
+        if(hit.collider.tag == "Platform")
+        {
+            controller.AddPlatformImpulse(backImpulse);
         }
     }
 }

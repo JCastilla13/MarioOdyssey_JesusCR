@@ -22,6 +22,8 @@ public class Input_Manager : MonoBehaviour
 
     private float backJumpButtonPressed = 0f;
 
+    private float frontJumpButtonPressed = 0f;
+
     private void Awake()
     {
         if (_INPUT_MANAGER != null && _INPUT_MANAGER != this)
@@ -38,6 +40,7 @@ public class Input_Manager : MonoBehaviour
             playerInputs.Character.SpawnCappy.performed += CappyButton;
             playerInputs.Character.Crouch.performed += CrouchButton;
             playerInputs.Character.BackJump.performed += BackJumpButton;
+            playerInputs.Character.FrontJump.performed += FrontJumpButton;
             _INPUT_MANAGER = this;
             DontDestroyOnLoad(this);
         }
@@ -52,6 +55,8 @@ public class Input_Manager : MonoBehaviour
         crouchButtonPressed += Time.deltaTime;
 
         backJumpButtonPressed += Time.deltaTime;
+
+        frontJumpButtonPressed += Time.deltaTime;
 
         InputSystem.Update();
     }
@@ -85,6 +90,11 @@ public class Input_Manager : MonoBehaviour
         backJumpButtonPressed = 0f;
     }
 
+    private void FrontJumpButton(InputAction.CallbackContext context)
+    {
+        frontJumpButtonPressed = 0f;
+    }
+
     public bool GetSouthButtonPressed()
     {
         return this.timeSinceJumpPressed == 0f;
@@ -113,5 +123,10 @@ public class Input_Manager : MonoBehaviour
     public bool GetBackJumpButton()
     {
         return this.backJumpButtonPressed == 0f;
+    }
+
+    public bool GetFrontJumpButton()
+    {
+        return this.frontJumpButtonPressed == 0f;
     }
 }

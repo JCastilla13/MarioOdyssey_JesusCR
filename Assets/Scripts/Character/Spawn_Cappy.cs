@@ -13,9 +13,6 @@ public class Spawn_Cappy : MonoBehaviour
     private Vector3 forwardPlusPosition = new Vector3(0, 1, 3);
 
     private Vector3 bouncePlayerDirection = Vector3.up;
-   
-    [SerializeField]
-    private float bouncePlayerForce = 10f;
 
     [SerializeField]
     private CharacterController characterController;
@@ -27,8 +24,11 @@ public class Spawn_Cappy : MonoBehaviour
         {
             if (cappyToSpawn != null)
             {
-                cappySpawned = Instantiate(cappyToSpawn, transform.position + forwardPlusPosition, transform.rotation);
-                Destroy(cappySpawned, 8f);
+                Vector3 cappySpawnPosition = characterController.transform.position + characterController.transform.forward * forwardPlusPosition.z;
+                cappySpawnPosition.y += forwardPlusPosition.y;
+
+                cappySpawned = Instantiate(cappyToSpawn, cappySpawnPosition, transform.rotation);
+                Destroy(cappySpawned, 6f);
             }
         }
     }
@@ -37,8 +37,8 @@ public class Spawn_Cappy : MonoBehaviour
     {
         if (hit.collider.tag == "Cappy")
         {
-            characterController.Move(bouncePlayerDirection * bouncePlayerForce);
-            
+            Character_Controller controller = GetComponent<Character_Controller>();
+            controller.AddCappyImpulse(bouncePlayerDirection);
         }
     }
 

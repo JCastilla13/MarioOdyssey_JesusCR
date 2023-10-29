@@ -80,6 +80,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FrontJump"",
+                    ""type"": ""Button"",
+                    ""id"": ""de2ec122-fc66-44c9-b419-c5ddf7da6eb8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -240,11 +249,44 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""124ba175-46b9-4acd-8b4e-3a868d796fb1"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BackJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d35a562-c24c-4197-920a-edab760a0a6e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BackJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7c3aaec-e75c-4eb3-9899-77442c3a9264"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FrontJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""15f5e61b-b67f-406f-94f0-12146ed6afa7"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FrontJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -261,6 +303,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Character_SpawnCappy = m_Character.FindAction("SpawnCappy", throwIfNotFound: true);
         m_Character_Crouch = m_Character.FindAction("Crouch", throwIfNotFound: true);
         m_Character_BackJump = m_Character.FindAction("BackJump", throwIfNotFound: true);
+        m_Character_FrontJump = m_Character.FindAction("FrontJump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,6 +371,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_SpawnCappy;
     private readonly InputAction m_Character_Crouch;
     private readonly InputAction m_Character_BackJump;
+    private readonly InputAction m_Character_FrontJump;
     public struct CharacterActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -338,6 +382,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @SpawnCappy => m_Wrapper.m_Character_SpawnCappy;
         public InputAction @Crouch => m_Wrapper.m_Character_Crouch;
         public InputAction @BackJump => m_Wrapper.m_Character_BackJump;
+        public InputAction @FrontJump => m_Wrapper.m_Character_FrontJump;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -365,6 +410,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @BackJump.started += instance.OnBackJump;
             @BackJump.performed += instance.OnBackJump;
             @BackJump.canceled += instance.OnBackJump;
+            @FrontJump.started += instance.OnFrontJump;
+            @FrontJump.performed += instance.OnFrontJump;
+            @FrontJump.canceled += instance.OnFrontJump;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -387,6 +435,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @BackJump.started -= instance.OnBackJump;
             @BackJump.performed -= instance.OnBackJump;
             @BackJump.canceled -= instance.OnBackJump;
+            @FrontJump.started -= instance.OnFrontJump;
+            @FrontJump.performed -= instance.OnFrontJump;
+            @FrontJump.canceled -= instance.OnFrontJump;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -412,5 +463,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSpawnCappy(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnBackJump(InputAction.CallbackContext context);
+        void OnFrontJump(InputAction.CallbackContext context);
     }
 }
